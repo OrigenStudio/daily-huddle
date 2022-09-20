@@ -1,0 +1,373 @@
+.themeBase {
+  --color-common-white: #fff;
+  --color-common-black: #000;
+
+  --color-gray-100: #f7fafc;
+  --color-gray-200: #edf2f7;
+  --color-gray-300: #e2e8f0;
+  --color-gray-400: #cbd5e0;
+  --color-gray-500: #a0aec0;
+  --color-gray-600: rgba(107, 114, 128, 100%);
+  --color-gray-700: rgba(75, 85, 99, 100%);
+  --color-gray-800: rgba(55, 65, 81, 100%);
+  --color-gray-900: rgba(31, 41, 55, 100%);
+
+  --color-primary-main: rgb(242, 29, 117);
+  --color-primary-light: rgb(245, 96, 158);
+
+  --color-success-main: green;
+  --color-warning-main: coral;
+  --color-danger-main: red;
+  --color-info-main: var(--color-primary-light);
+
+  --transition-common: color 200ms ease-in-out,
+    background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+}
+
+.themeLight {
+  --tw-shadow-1: 0 20px 25px -5px rgb(0 0 0 / 0.025),
+    0 8px 10px -6px rgb(0 0 0 / 0.033);
+  --tw-shadow-2: 0 20px 25px -5px rgb(0 0 0 / 0.05),
+    0 8px 10px -6px rgb(0 0 0 / 0.066);
+  --tw-shadow-3: 0 20px 25px -5px rgb(0 0 0 / 0.075),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  --color-text-primary: var(--color-gray-700);
+  --color-text-secondary: var(--color-gray-800);
+  --color-text-disabled: rgba(12, 24, 33, 0.6);
+  --color-background-default: var(--color-common-white);
+}
+
+.themeDark {
+  --color-text-primary: var(--color-gray-200);
+  --color-text-secondary: var(--color-gray-100);
+  --color-text-disabled: var(--color-gray-500);
+  --color-background-default: var(--color-gray-900);
+
+  --color-success-main: lawngreen;
+  --color-warning-main: coral;
+  --color-danger-main: red;
+  --color-info-main: var(--color-primary-light);
+}
+
+.containerOuter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-background-default);
+  color: var(--color-text-primary);
+}
+.containerOuter,
+.containerOuter * {
+  transition: var(--transition-common);
+}
+.containerOuter *:focus-visible {
+  outline-color: var(--color-primary-main);
+  outline-style: solid;
+  outline-offset: -1px;
+  outline-width: 1px;
+}
+
+.containerInner {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@media (min-width: 640px) {
+  .containerInner {
+    max-width: 640px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 5rem;
+  }
+}
+
+.colorPrimary {
+  color: var(--color-primary-main);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.buttonGroup {
+  display: flex;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.buttonGroup > * {
+  margin: 0 8px;
+}
+
+.buttonGroupSmall {
+  display: flex;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+.buttonGroupSmall > * {
+  margin: 0 4px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  background-color: var(--color-background-default);
+  border: 1px solid currentColor;
+  box-shadow: var(--tw-shadow-2);
+}
+
+.buttonSmall {
+  padding: 5px 8px;
+}
+
+.button:hover {
+  box-shadow: var(--tw-shadow-3);
+  cursor: pointer;
+}
+
+.button[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+  color: var(--color-text-disabled);
+}
+
+.buttonSuccess,
+.buttonStart,
+.buttonNext,
+.buttonResume {
+  color: var(--color-success-main);
+}
+
+.buttonWarning,
+.buttonPause {
+  color: var(--color-warning-main);
+}
+
+.buttonDanger,
+.buttonReset {
+  color: var(--color-danger-main);
+}
+
+.buttonDragHandle {
+  border: none;
+  box-shadow: none;
+}
+.buttonDragHandle:hover {
+  box-shadow: none;
+  cursor: move;
+}
+
+.huddleStopped {
+}
+
+.huddlePaused {
+}
+
+.huddleOngoing {
+}
+
+.timerBlocks,
+.members {
+}
+
+.timerBlock,
+.member {
+  padding: 1rem 0.8rem;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid transparent;
+  position: relative;
+}
+
+.timerBlockContent,
+.memberContent {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.huddle .memberName {
+  transition: var(--transition-common), padding-left 0.2s ease-in-out;
+  padding-left: 50%;
+}
+
+.huddle .memberName > span {
+  transform: translateX(-50%);
+  display: inline-block;
+  transition: var(--transition-common), transform 200ms ease-in-out;
+}
+
+.memberContent > * {
+  flex: 1;
+}
+
+.memberContent > .flexGrow + .flexGrow {
+  flex: 0 9999 auto;
+}
+
+.huddle .member.memberActive .memberName {
+  font-weight: bold;
+}
+/* .huddle .member.memberCompleted .memberName, */
+.huddle .member.memberActive .memberName {
+  padding-left: 0%;
+}
+/* .huddle .member.memberCompleted .memberName > span, */
+.huddle .member.memberActive .memberName > span {
+  transform: translateX(0%);
+}
+
+.membersConfiguration .timerBlockContent > .buttonDragHandle,
+.membersConfiguration .memberContent > .buttonDragHandle {
+  margin-right: 16px;
+}
+
+.membersConfiguration .timerBlockLabel,
+.membersConfiguration .timerBlockSeconds,
+.membersConfiguration .memberName {
+  padding-right: 16px;
+}
+
+.membersConfiguration .timerBlock,
+.membersConfiguration .member {
+  padding: 0.6rem 0;
+}
+
+.membersConfiguration .timerBlock.timerBlockDragging,
+.membersConfiguration .member.memberDragging {
+  opacity: 0;
+}
+
+.member .memberTimerBlockSeconds {
+  white-space: nowrap;
+  color: var(--color-primary-main);
+}
+.member .memberTimerBlockName {
+  text-align: right;
+  transition: var(--transition-common), max-width 200ms ease-in-out,
+    opacity 200ms ease-in-out 100ms;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.member.memberActive .memberTimerBlockName {
+  max-width: 100%;
+  opacity: 1;
+}
+
+.memberTimerBlockProgress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  transition: var(--transition-common), width 250ms ease-out,
+    background-color 500ms ease-in-out, height 500ms ease-in-out,
+    border-radius 500ms ease-in-out;
+  border-radius: 0;
+}
+
+.memberActive .memberTimerBlockProgress {
+  height: 2px;
+}
+
+.memberTimerBlockProgress.memberTimerBlockProgressActive {
+  height: 4px;
+  background-color: var(--color-primary-main);
+  border-radius: min(100%, 4px) min(100%, 4px) 0 0;
+}
+
+.memberTimerBlockProgress.memberTimerBlockProgressCompleted {
+  background-color: var(--color-info-main);
+}
+
+.huddleStopped .memberTimerBlockProgress {
+  height: 0;
+  background-color: transparent !important;
+
+  transition: var(--transition-common), width 250ms ease-in 500ms,
+    background-color 500ms ease-in-out, height 500ms ease-in-out,
+    border-radius 500ms ease-in-out 500ms;
+}
+
+.theme {
+}
+
+.fieldContent {
+  display: flex;
+  justify-content: center;
+  margin-left: -0.6rem;
+  margin-right: -0.6rem;
+  width: calc(100% + 1.2rem);
+}
+.fieldContent .field {
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+}
+.field[data-fullwidth="true"] {
+  width: 100%;
+}
+
+.flexGrow {
+  flex-grow: 999999;
+}
+
+.section {
+  width: 100%;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.section > .subtitle {
+  text-align: center;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+.section > .buttonGroup {
+  align-self: center;
+  margin-top: 16px;
+}
+.field {
+  margin: 0.6rem 0;
+}
+
+.footer {
+  font-size: 0.9rem;
+}
+
+.center {
+  text-align: center;
+}
