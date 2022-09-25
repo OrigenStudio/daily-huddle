@@ -1,5 +1,9 @@
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import isDeeplyEqual from "../../../helpers/isDeeplyEqual";
+import omitBy from "../../../helpers/omitBy";
+import parseQueryParam from "../../../helpers/parseQueryParam";
+import stringifyQueryParam from "../../../helpers/stringifyQueryParam";
 import { Theme } from "../types";
 
 export const PARAM_THEME = "theme";
@@ -12,13 +16,16 @@ export default function useTheme() {
     toggleThemeMode: () => {
       router.replace({
         ...router,
-        query: {
-          ...router.query,
-          [PARAM_THEME]: themeAsQueryParam({
-            ...theme,
-            mode: theme.mode === "light" ? "dark" : "light",
-          }),
-        },
+        query: omitBy(
+          {
+            ...router.query,
+            [PARAM_THEME]: themeAsQueryParam({
+              ...theme,
+              mode: theme.mode === "light" ? "dark" : "light",
+            }),
+          },
+          (value) => !value
+        ),
       });
     },
   };
@@ -43,12 +50,7 @@ function useRouterTheme(): Theme {
   const rawValue = router.query[PARAM_THEME];
   return useMemo(() => {
     const rawTheme = (Array.isArray(rawValue) ? rawValue[0] : rawValue) || "";
-    let theme: null | Theme = null;
-    try {
-      theme = JSON.parse(rawTheme) as Theme;
-    } catch (error) {
-      // do nothing
-    }
+    const theme = parseQueryParam<Theme>(rawTheme, defaultTheme);
     return {
       ...defaultTheme,
       mode:
@@ -58,9 +60,10 @@ function useRouterTheme(): Theme {
       palette: {
         primary: {
           main:
-            theme?.palette.primary.main ?? defaultTheme.palette.primary.main,
+            theme?.palette?.primary?.main ?? defaultTheme.palette.primary.main,
           light:
-            theme?.palette.primary.light ?? defaultTheme.palette.primary.light,
+            theme?.palette?.primary?.light ??
+            defaultTheme.palette.primary.light,
         },
       },
       favicon: theme?.favicon ?? defaultTheme.favicon,
@@ -69,5 +72,7 @@ function useRouterTheme(): Theme {
 }
 
 export function themeAsQueryParam(theme: Theme): string {
-  return JSON.stringify(theme);
+  return stringifyQueryParam(
+    omitBy(theme, (value, key) => !value || isDeeplyEqual(value, defaultTheme[key]))
+  );
 }

@@ -1,5 +1,8 @@
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import isDeeplyEqual from "../../../helpers/isDeeplyEqual";
+import parseQueryParam from "../../../helpers/parseQueryParam";
+import stringifyQueryParam from "../../../helpers/stringifyQueryParam";
 import { TimerBlock } from "../types";
 
 export const PARAM_TIMER_BLOCKS = "timerBlocks";
@@ -21,17 +24,9 @@ function useRouterTimerBlocks(): TimerBlock[] {
 
   const rawValue = router.query[PARAM_TIMER_BLOCKS];
   return useMemo(() => {
-    const rawTimerBlocks =
-      (Array.isArray(rawValue) ? rawValue[0] : rawValue) || "";
-
-    let timerBlocks: null | TimerBlock[] = null;
-    try {
-      timerBlocks = JSON.parse(rawTimerBlocks) as TimerBlock[];
-    } catch (error) {
-      // do nothing
-    } finally {
-      timerBlocks = Array.isArray(timerBlocks) ? timerBlocks : [];
-    }
+    const timerBlocks = parseQueryParam<TimerBlock[]>(rawValue, (value) =>
+      Array.isArray(value) ? value : []
+    );
 
     const valueArray = timerBlocks.reduce<TimerBlock[]>((acc, timerBlock) => {
       const { id, label, seconds: secondsRaw } = timerBlock || {};
@@ -47,5 +42,7 @@ function useRouterTimerBlocks(): TimerBlock[] {
 }
 
 export function timerBlocksAsQueryParam(timerBlocks: TimerBlock[]): string {
-  return JSON.stringify(timerBlocks);
+  return isDeeplyEqual(timerBlocks, defaultTimerBlocks)
+    ? ""
+    : stringifyQueryParam(timerBlocks);
 }

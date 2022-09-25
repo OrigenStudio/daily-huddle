@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+import omitBy from "../../../helpers/omitBy";
 import {
   membersAsQueryParam,
   PARAM_MEMBERS,
@@ -67,28 +68,37 @@ export default function useHuddleConfiguration({
     onConfigure: () => {
       router.replace({
         pathname: "/configure",
-        query: { ...router.query, ...valuesAsQueryParams(initialValues) },
+        query: omitBy(
+          { ...router.query, ...valuesAsQueryParams(initialValues) },
+          (value) => !value
+        ),
       });
     },
     onSave: () => {
       router.replace({
         pathname: "/",
-        query: {
-          ...router.query,
-          ...valuesAsQueryParams({
-            ...values,
-            members: values.members.map((member, index) => ({
-              ...member,
-              id: index.toString(),
-            })),
-          }),
-        },
+        query: omitBy(
+          {
+            ...router.query,
+            ...valuesAsQueryParams({
+              ...values,
+              members: values.members.map((member, index) => ({
+                ...member,
+                id: index.toString(),
+              })),
+            }),
+          },
+          (value) => !value
+        ),
       });
     },
     onCancel: () => {
       router.replace({
         pathname: "/",
-        query: { ...router.query, ...valuesAsQueryParams(initialValues) },
+        query: omitBy(
+          { ...router.query, ...valuesAsQueryParams(initialValues) },
+          (value) => !value
+        ),
       });
     },
   };
@@ -147,9 +157,8 @@ function isDirty({
       initialValues.theme.palette.primary.main !==
         values.theme.palette.primary.main ||
       initialValues.theme.palette.primary.light !==
-        values.theme.palette.primary.light||
-      initialValues.theme.favicon !==
-        values.theme.favicon
+        values.theme.palette.primary.light ||
+      initialValues.theme.favicon !== values.theme.favicon
     );
   }
   function isDirtyCopy() {
@@ -161,9 +170,9 @@ export function valuesAsQueryParams(
   values: HuddleConfigurationFormStateValues
 ) {
   return {
-    [PARAM_COPY]: copyAsQueryParam(values.copy),
-    [PARAM_MEMBERS]: membersAsQueryParam(values.members),
-    [PARAM_TIMER_BLOCKS]: timerBlocksAsQueryParam(values.timerBlocks),
-    [PARAM_THEME]: themeAsQueryParam(values.theme),
+    [PARAM_COPY]: copyAsQueryParam(values.copy) ?? null,
+    [PARAM_MEMBERS]: membersAsQueryParam(values.members) ?? null,
+    [PARAM_TIMER_BLOCKS]: timerBlocksAsQueryParam(values.timerBlocks) ?? null,
+    [PARAM_THEME]: themeAsQueryParam(values.theme) ?? null,
   };
 }

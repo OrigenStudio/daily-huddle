@@ -1,5 +1,8 @@
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import omitBy from "../../../helpers/omitBy";
+import parseQueryParam from "../../../helpers/parseQueryParam";
+import stringifyQueryParam from "../../../helpers/stringifyQueryParam";
 import { HuddleCopy } from "../types";
 import { defaultHuddle } from "./useHuddle";
 
@@ -9,24 +12,30 @@ export function useHuddleCopy() {
   return useRouterCopy();
 }
 
+const defaultHuddleCopy: HuddleCopy = {
+  title: defaultHuddle.title,
+  subtitle: defaultHuddle.subtitle,
+};
+
 function useRouterCopy() {
   const router = useRouter();
   const rawValue = router.query[PARAM_COPY];
   return useMemo(() => {
-    const rawCopy = (Array.isArray(rawValue) ? rawValue[0] : rawValue) || "";
-    let copy: null | HuddleCopy = null;
-    try {
-      copy = JSON.parse(rawCopy) as HuddleCopy;
-    } catch (error) {
-      // do nothing
-    }
-    return {
-      title: copy?.title || defaultHuddle.title,
-      subtitle: copy?.subtitle || defaultHuddle.subtitle,
-    };
+    const copy = parseQueryParam<HuddleCopy>(rawValue, defaultHuddleCopy);
+    return Object.keys(defaultHuddleCopy).reduce<HuddleCopy>(
+      (acc, key) => ({
+        ...acc,
+        [key]:
+          copy?.[key as keyof HuddleCopy] ??
+          defaultHuddleCopy[key as keyof HuddleCopy],
+      }),
+      {} as HuddleCopy
+    );
   }, [rawValue]);
 }
 
 export function copyAsQueryParam(copy: HuddleCopy) {
-  return JSON.stringify(copy);
+  return stringifyQueryParam(
+    omitBy(copy, (value, key) => !value || value === defaultHuddle[key])
+  );
 }

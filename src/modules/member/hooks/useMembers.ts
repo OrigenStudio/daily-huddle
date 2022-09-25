@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import parseQueryParam from "../../../helpers/parseQueryParam";
+import stringifyQueryParam from "../../../helpers/stringifyQueryParam";
 import { Member } from "../types";
 
 export const PARAM_MEMBERS = "members";
@@ -15,16 +17,9 @@ function useRouterMembers(): Member[] {
 
   const rawValue = router.query[PARAM_MEMBERS];
   return useMemo(() => {
-    const rawMembers = (Array.isArray(rawValue) ? rawValue[0] : rawValue) || "";
-
-    let members: null | Member[] = null;
-    try {
-      members = JSON.parse(rawMembers) as Member[];
-    } catch (error) {
-      // do nothing
-    } finally {
-      members = Array.isArray(members) ? members : [];
-    }
+    const members = parseQueryParam<Member[]>(rawValue, (value) =>
+      Array.isArray(value) ? value : []
+    );
 
     return members.reduce<Member[]>((acc, member) => {
       const { id, name } = member || {};
@@ -34,5 +29,5 @@ function useRouterMembers(): Member[] {
 }
 
 export function membersAsQueryParam(members: Member[]): string {
-  return JSON.stringify(members);
+  return stringifyQueryParam(members);
 }
