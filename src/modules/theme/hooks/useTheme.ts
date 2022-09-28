@@ -73,6 +73,9 @@ function useRouterTheme(): Theme {
 
 export function themeAsQueryParam(theme: Theme): string {
   return stringifyQueryParam(
-    omitBy(theme, (value, key) => !value || isDeeplyEqual(value, defaultTheme[key]))
+    omitBy(
+      theme,
+      (value, key) => !value || isDeeplyEqual(value, defaultTheme[key])
+    )
   );
 }

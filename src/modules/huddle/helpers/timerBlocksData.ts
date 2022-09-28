@@ -41,30 +41,34 @@ export function reduceMemberTimerBlocksData({
     0
   );
 
-  return huddle.timerBlocks.reduce<TimerBlockData[]>((acc, timerBlock, index) => {
-    const active = variant === "active" && index === huddle.currentMemberTimer;
-    const total = (timerBlock.seconds * 100) / totalSeconds;
-    const prevTimerBlock = acc[index - 1];
-    const offset = prevTimerBlock
-      ? prevTimerBlock.offset + prevTimerBlock.total
-      : 0;
-    return [
-      ...acc,
-      {
-        active,
-        offset,
-        total,
-        progress: {
-          active: active
-            ? ((timerBlock.seconds - huddle.secondsLeft) * 100) / totalSeconds
-            : typeof huddle.currentMemberTimer === "number" &&
-              index < huddle.currentMemberTimer
-            ? total
-            : 0,
-          completed: total,
-          remaining: 0,
-        }[variant],
-      },
-    ];
-  }, []);
+  return huddle.timerBlocks.reduce<TimerBlockData[]>(
+    (acc, timerBlock, index) => {
+      const active =
+        variant === "active" && index === huddle.currentMemberTimer;
+      const total = (timerBlock.seconds * 100) / totalSeconds;
+      const prevTimerBlock = acc[index - 1];
+      const offset = prevTimerBlock
+        ? prevTimerBlock.offset + prevTimerBlock.total
+        : 0;
+      return [
+        ...acc,
+        {
+          active,
+          offset,
+          total,
+          progress: {
+            active: active
+              ? ((timerBlock.seconds - huddle.secondsLeft) * 100) / totalSeconds
+              : typeof huddle.currentMemberTimer === "number" &&
+                index < huddle.currentMemberTimer
+              ? total
+              : 0,
+            completed: total,
+            remaining: 0,
+          }[variant],
+        },
+      ];
+    },
+    []
+  );
 }
