@@ -10,7 +10,7 @@
     "lint": "next lint",
     "format": "prettier --write --plugin-search-dir=. \"**/*.{ts,tsx,md,mdx,json,js,mjs,cjs,astro}\" --ignore-path .gitignore",
     "format:check": "prettier --check --plugin-search-dir=. \"**/*.{ts,tsx,md,mdx,json,js,mjs,cjs,astro}\" --ignore-path .gitignore",
-    "typecheck": "tsc",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "check": "pnpm lint && pnpm format:check && pnpm typecheck"
   },
   "dependencies": {
